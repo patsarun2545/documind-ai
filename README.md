@@ -1,4 +1,6 @@
-# DocuMind 🤖
+# 🤖 DocuMind-AI 
+
+[![Live Demo](https://img.shields.io/badge/Live-Demo-000?style=flat-square&logo=vercel&logoColor=white)](https://documind-ai-green.vercel.app/)
 
 AI-powered document chat application built with Next.js, featuring RAG pipeline with Gemini AI and PostgreSQL with pgvector for semantic search.
 
