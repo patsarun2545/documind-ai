@@ -16,3 +16,7 @@ jobs:
       - run: npm ci
       - run: npm i -g vercel
       - run: vercel --prod --token=${{ secrets.VERCEL_TOKEN }}
+    env:
+      DATABASE_URL: ${{ secrets.DATABASE_URL || 'postgresql://postgres:postgres@localhost:5432/documind?schema=public' }}
+      JWT_SECRET: ${{ secrets.JWT_SECRET || 'ci-build-jwt-secret-key-32-chars-minimum' }}
+      GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY || 'ci-build-placeholder-api-key' }}

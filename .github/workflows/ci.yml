@@ -53,6 +53,6 @@ jobs:
           name: build
           path: .next
     env:
-      DATABASE_URL: ${{ secrets.DATABASE_URL }}
-      JWT_SECRET: ${{ secrets.JWT_SECRET }}
-      GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+      DATABASE_URL: ${{ secrets.DATABASE_URL || 'postgresql://postgres:postgres@localhost:5432/documind?schema=public' }}
+      JWT_SECRET: ${{ secrets.JWT_SECRET || 'ci-build-jwt-secret-key-32-chars-minimum' }}
+      GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY || 'ci-build-placeholder-api-key' }}
