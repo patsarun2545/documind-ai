@@ -1,0 +1,41 @@
+@import "tailwindcss";
+
+@keyframes neural-pulse {
+  0%, 100% { opacity: 0.03; transform: scale(1); }
+  50% { opacity: 0.06; transform: scale(1.02); }
+}
+
+.neural-pulse {
+  animation: neural-pulse 4s ease-in-out infinite;
+}
+
+@keyframes bounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-4px); }
+}
+
+.animate-bounce {
+  animation: bounce 1s infinite;
+}
+
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+.shimmer {
+  background: linear-gradient(
+    90deg,
+    rgba(255,255,255,0.08) 0%,
+    rgba(255,255,255,0.15) 50%,
+    rgba(255,255,255,0.08) 100%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .neural-pulse { animation: none; }
+  .animate-bounce { animation: none; }
+  .shimmer { animation: none; }
+}

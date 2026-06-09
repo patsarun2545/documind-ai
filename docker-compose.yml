@@ -1,0 +1,40 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: pgvector/pgvector:pg16
+    container_name: documind-postgres
+    environment:
+      POSTGRES_USER: documind
+      POSTGRES_PASSWORD: documind_password
+      POSTGRES_DB: documind
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U documind"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+
+  web:
+    build: .
+    container_name: documind-web
+    ports:
+      - "3000:3000"
+    environment:
+      NODE_ENV: production
+      DATABASE_URL: postgresql://documind:documind_password@postgres:5432/documind
+      GEMINI_API_KEY: ${GEMINI_API_KEY}
+      JWT_SECRET: ${JWT_SECRET}
+      NEXT_PUBLIC_APP_URL: ${NEXT_PUBLIC_APP_URL:-http://localhost:3000}
+    depends_on:
+      postgres:
+        condition: service_healthy
+    volumes:
+      - uploads_data:/app/public/uploads
+
+volumes:
+  postgres_data:
+  uploads_data:

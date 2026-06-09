@@ -1,0 +1,77 @@
+generator client {
+  provider = "prisma-client-js"
+}
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+enum DocumentStatus {
+  PROCESSING
+  READY
+  FAILED
+}
+
+enum MessageRole {
+  USER
+  ASSISTANT
+}
+
+model User {
+  id           String        @id @default(uuid())
+  email        String        @unique
+  password     String
+  name         String?
+  createdAt    DateTime      @default(now())
+  documents    Document[]
+  chatSessions ChatSession[]
+}
+
+model Document {
+  id           String          @id @default(uuid())
+  userId       String
+  user         User            @relation(fields: [userId], references: [id])
+  title        String
+  fileName     String
+  fileSize     Int
+  fileType     String
+  status       DocumentStatus  @default(PROCESSING)
+  chunks       DocumentChunk[]
+  chatSessions ChatSession[]
+  createdAt    DateTime        @default(now())
+  @@index([userId])
+}
+
+model DocumentChunk {
+  id         String   @id @default(uuid())
+  documentId String
+  document   Document @relation(fields: [documentId], references: [id])
+  content    String
+  chunkIndex Int
+  embedding  Unsupported("vector(3072)")?
+  createdAt  DateTime @default(now())
+  @@index([documentId])
+}
+
+model ChatSession {
+  id         String        @id @default(uuid())
+  userId     String
+  documentId String
+  user       User          @relation(fields: [userId], references: [id])
+  document   Document      @relation(fields: [documentId], references: [id])
+  title      String
+  messages   ChatMessage[]
+  createdAt  DateTime      @default(now())
+  @@index([userId])
+  @@index([documentId])
+}
+
+model ChatMessage {
+  id        String      @id @default(uuid())
+  sessionId String
+  session   ChatSession @relation(fields: [sessionId], references: [id])
+  role      MessageRole
+  content   String
+  sources   Json?
+  createdAt DateTime    @default(now())
+  @@index([sessionId])
+}
