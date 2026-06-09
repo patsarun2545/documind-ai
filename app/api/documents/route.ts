@@ -118,9 +118,9 @@ export async function POST(request: NextRequest) {
     const buffer = Buffer.from(await file.arrayBuffer())
     const fileUuid = crypto.randomUUID()
     const fileName = `${fileUuid}-${file.name}`
-    const filePath = join(process.cwd(), 'public', 'uploads', fileName)
+    const filePath = join('/tmp', 'uploads', fileName)
 
-    await mkdir(join(process.cwd(), 'public', 'uploads'), { recursive: true })
+    await mkdir(join('/tmp', 'uploads'), { recursive: true })
     await writeFile(filePath, buffer)
 
     const document = await prisma.document.create({
